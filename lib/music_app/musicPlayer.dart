@@ -4,16 +4,73 @@ import 'package:flutter/material.dart';
 import 'package:my_app/music_app/homepage.dart';
 import 'package:my_app/music_colors/app_colors.dart' as AppColors;
 import '../models/database.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class MusicPlayer extends StatefulWidget {
-  final Song song;
-  MusicPlayer(this.song);
+  final Song index;
+  MusicPlayer(this.index);
 
   @override
   State<MusicPlayer> createState() => _MusicPlayerState();
 }
 
 class _MusicPlayerState extends State<MusicPlayer> {
+  final player = AudioPlayer();
+  bool isPlaying = false;
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
+
+  @override
+  void initState() {
+    setAudio();
+
+    super.initState();
+
+    player.onPlayerStateChanged.listen((state) {
+      setState(() {
+        isPlaying = state == PlayerState.playing;
+      });
+    });
+    //LISTEN TO AUDIO DURATIOM
+    player.onDurationChanged.listen((newDuration) {
+      setState(() {
+        duration = newDuration;
+      });
+    });
+
+    //Listen to audio position
+    player.onPositionChanged.listen((newPosition) {
+      setState(() {
+        position = newPosition;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    player.dispose();
+    super.dispose();
+  }
+
+  String? time(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, "0");
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes);
+    final seconds = twoDigits(duration.inSeconds);
+
+    return [
+      if (duration.inHours > 0) hours,
+      minutes,
+      seconds,
+    ].join(":");
+  }
+
+  Future setAudio() async {
+    player.setReleaseMode(ReleaseMode.loop);
+    String url = widget.index.url;
+    player.setSourceUrl(widget.index.url);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -25,7 +82,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(widget.song.image),
+                image: AssetImage(widget.index.image),
                 fit: BoxFit.cover,
               ),
             ),
@@ -102,7 +159,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               Text(
-                                widget.song.name,
+                                widget.index.name,
                                 style: TextStyle(
                                     color: AppColors.temp,
                                     fontSize: 30,
@@ -119,7 +176,7 @@ class _MusicPlayerState extends State<MusicPlayer> {
                         Padding(
                           padding: EdgeInsets.only(left: 20),
                           child: Text(
-                            widget.song.singer,
+                            widget.index.singer,
                             style: TextStyle(
                               color: AppColors.temp,
                             ),
@@ -135,10 +192,15 @@ class _MusicPlayerState extends State<MusicPlayer> {
                               trackHeight: 6,
                             ),
                             child: Slider(
-                              value: currentSlider,
-                              onChanged: (val) {
-                                currentSlider = val;
-                                setState(() {});
+                              min: 0,
+                              max: duration.inSeconds.toDouble(),
+                              value: position.inSeconds.toDouble(),
+                              onChanged: (value) async {
+                                final position =
+                                    Duration(seconds: value.toInt());
+                                await player.seek(position);
+
+                                await player.resume;
                               },
                             ),
                           ),
@@ -149,17 +211,15 @@ class _MusicPlayerState extends State<MusicPlayer> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                Duration(
-                                  seconds: currentSlider.toInt(),
-                                ).toString().split(".")[0].substring(2),
+                                duration.toString().split(".")[0],
+                                //  time(duration) ?? "",
                                 style: TextStyle(
                                   color: Colors.white,
                                 ),
                               ),
                               Text(
-                                Duration(
-                                  seconds: currentSlider.toInt(),
-                                ).toString().split(".")[0].substring(2),
+                                time(duration - position) ?? "",
+                                //  time(duration - position) ?? "",
                                 style: TextStyle(
                                   color: Colors.white,
                                 ),
@@ -178,15 +238,27 @@ class _MusicPlayerState extends State<MusicPlayer> {
                               color: AppColors.temp,
                               size: 40,
                             ),
-                            Icon(
-                              Icons.pause,
-                              color: AppColors.temp,
-                              size: 50,
+                            IconButton(
+                              onPressed: () async {
+                                if (isPlaying) {
+                                  await player.pause();
+                                } else {
+                                  await player.resume();
+                                }
+                              },
+                              icon: Icon(
+                                  isPlaying ? Icons.pause : Icons.play_arrow),
+                              iconSize: 50,
                             ),
-                            Icon(
-                              Icons.skip_next_outlined,
-                              color: AppColors.temp,
-                              size: 40,
+                            IconButton(
+                              icon: Icon(
+                                Icons.skip_next_outlined,
+                                size: 40,
+                                color: AppColors.temp,
+                              ),
+                              onPressed: () {
+                                // this.widget.index.setPlayBackRate(1.5);
+                              },
                             ),
                           ],
                         ),

@@ -6,6 +6,7 @@ class Song {
   final String image;
   final int duration;
   final Color color;
+  final String url;
 
   Song({
     required this.name,
@@ -13,6 +14,7 @@ class Song {
     required this.image,
     required this.duration,
     required this.color,
+    required this.url,
   });
 }
 
@@ -23,6 +25,7 @@ List<Song> mostPopular = [
     singer: "Syke Dali",
     color: Colors.grey,
     duration: 300,
+    url: "https://mp3uk.net/mp3/files/eminem-d12-under-the-influence-mp3.mp3",
   ),
   Song(
     name: "BadHabits",
@@ -30,20 +33,22 @@ List<Song> mostPopular = [
     singer: "Tvorchi",
     color: Colors.red,
     duration: 252,
+    url: "https://mp3uk.net/mp3/files/eminem-dina-rae-superman-mp3.mp3",
   ),
   Song(
-    name: "Don't worry...",
-    image: "assets/bob.marley2.jpg",
-    singer: "Bobby McFerrin",
-    color: Colors.orange,
-    duration: 532,
-  ),
+      name: "Don't worry...",
+      image: "assets/bob.marley2.jpg",
+      singer: "Bobby McFerrin",
+      color: Colors.orange,
+      duration: 532,
+      url: "https://mp3uk.net/mp3/files/imagine-dragons-love-of-mine-mp3.mp3"),
   Song(
     name: "Like it doesn't hurt",
     image: "assets/Elton2.jpg",
     singer: "Elton Jhon",
     color: Colors.blue,
     duration: 264,
+    url: "https://mp3uk.net/mp3/files/imagine-dragons-monster-mp3.mp3",
   ),
 ];
 
@@ -54,6 +59,7 @@ List<Song> newRealese = [
     singer: "Billie Eilish",
     color: Colors.grey,
     duration: 252,
+    url: "https://mp3uk.net/mp3/files/imagine-dragons-bad-liar-mp3.mp3",
   ),
   Song(
     name: "Saza Seret",
@@ -61,6 +67,7 @@ List<Song> newRealese = [
     singer: "Soprano fear Dali",
     color: Colors.grey,
     duration: 300,
+    url: "https://mp3uk.net/mp3/files/imagine-dragons-follow-you-mp3.mp3",
   ),
   Song(
     name: "Perfect",
@@ -68,6 +75,7 @@ List<Song> newRealese = [
     singer: "Ed Sheeran",
     color: Colors.blue,
     duration: 254,
+    url: "https://mp3uk.net/mp3/files/imagine-dragons-monster-mp3.mp3",
   ),
   Song(
     name: "Yazgul",
@@ -75,5 +83,6 @@ List<Song> newRealese = [
     singer: "Atabay",
     color: Colors.orange,
     duration: 532,
+    url: "https://mp3uk.net/mp3/files/imagine-dragons-bones-mp3.mp3",
   ),
 ];

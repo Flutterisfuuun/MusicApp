@@ -155,9 +155,10 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 Song currentSong = Song(
-    name: "Don't worry,Be Happy",
+    name: "Don't worry...",
     singer: "Bob Marley",
     image: "assets/HomeCovers.png",
     duration: 100,
+    url: "https://mp3uk.net/mp3/files/imagine-dragons-bones-mp3.mp3",
     color: AppColors.temp2);
 double currentSlider = 0;
