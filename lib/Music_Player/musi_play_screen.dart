@@ -153,7 +153,6 @@ class _Music_palay_screenState extends State<Music_palay_screen> {
                 ],
               ),
             ),
-
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -190,24 +189,6 @@ class _Music_palay_screenState extends State<Music_palay_screen> {
                 ),
               ],
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     btnSlow(),
-            // IconButton(
-            //   onPressed: () async {
-            //     if (isPlaying) {
-            //       await player.pause();
-            //     } else {
-            //       await player.resume();
-            //     }
-            //   },
-            //   icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow),
-            //   iconSize: 50,
-            // ),
-            //     btnFast(),
-            //   ],
-            // ),
           ],
         ),
       ),
@@ -218,17 +199,6 @@ class _Music_palay_screenState extends State<Music_palay_screen> {
     return IconButton(
       icon: Icon(
         Icons.skip_previous,
-        size: 50,
-        color: Colors.white,
-      ),
-      onPressed: () {},
-    );
-  }
-
-  Widget btnFast() {
-    return IconButton(
-      icon: Icon(
-        Icons.skip_next_outlined,
         size: 50,
         color: Colors.white,
       ),
